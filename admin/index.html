@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How Models Wander | Archive Control</title>
+  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+</head>
+<body>
+  <script>
+    CMS.init({
+      config: {
+        backend: {
+          name: 'github',
+          repo: 'kcogmon/how-models-wander', // Double check this matches your GitHub repo name
+          branch: 'main',
+          base_url: 'https://howmodelswander.com',
+          auth_type: 'implicit' 
+        },
+        load_config_file: false,
+        media_folder: 'images',
+        public_folder: '/images',
+        collections: [
+          {
+            name: 'archive',
+            label: 'Archive Posts',
+            folder: 'posts',
+            create: true,
+            slug: '{{year}}-{{month}}-{{day}}-{{slug}}',
+            fields: [
+              { label: 'Featured Image', name: 'image', widget: 'image' },
+              { label: 'Location', name: 'location', widget: 'string' },
+              { label: 'Description', name: 'body', widget: 'text' },
+              { label: 'Sync Score', name: 'sync', widget: 'string', default: '94%' }
+            ]
+          }
+        ]
+      }
+    });
+  </script>
+</body>
+</html>

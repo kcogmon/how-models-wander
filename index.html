@@ -5,7 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Infinity Finn Jasele | How Models Wander</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/@sanity/client@6.21.1/dist/index.umd.js"></script>
+    
+    <script type="importmap">
+      {
+        "imports": {
+          "@sanity/client": "https://esm.sh/@sanity/client@6.21.1"
+        }
+      }
+    </script>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;600&display=swap');
@@ -20,7 +28,7 @@
     <header class="max-w-6xl mx-auto p-8 mb-12 flex flex-col md:flex-row items-center justify-between rounded-[40px] shadow-sm bg-white/70 backdrop-blur-md border border-white">
         <div class="flex flex-col md:flex-row items-center gap-8">
             <div class="w-24 h-24 rounded-full overflow-hidden border-4 border-white shadow-xl bg-slate-200">
-                <img id="profile-img" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=256&h=256&auto=format&fit=crop" class="w-full h-full object-cover" alt="Profile">
+                <img id="profile-img" src="https://api.dicebear.com/7.x/shapes/svg?seed=infinity" class="w-full h-full object-cover" alt="Profile">
             </div>
             <div class="text-center md:text-left">
                 <h1 class="text-2xl font-light tracking-[0.4em] text-slate-800 uppercase">Infinity Finn Jasele</h1>
@@ -67,10 +75,10 @@
     </section>
 
     <div id="postModal" class="flex items-center justify-center p-4">
-        <div class="bg-white w-full max-w-4xl h-[80vh] rounded-[3rem] overflow-hidden flex flex-col md:flex-row relative">
-            <button onclick="closeModal()" class="absolute top-6 right-8 z-50 text-2xl text-slate-400">✕</button>
+        <div class="bg-white w-full max-w-4xl h-[80vh] rounded-[3rem] overflow-hidden flex flex-col md:flex-row relative shadow-2xl">
+            <button id="closeModalBtn" class="absolute top-6 right-8 z-50 text-2xl text-slate-400 hover:text-slate-800">✕</button>
             <img id="modalImg" src="" class="w-full md:w-3/5 h-1/2 md:h-full object-cover">
-            <div class="p-10 flex flex-col justify-center">
+            <div class="p-10 flex flex-col justify-center bg-white">
                 <p id="modalLoc" class="tech-text text-blue-600 mb-4"></p>
                 <h2 class="text-3xl font-light mb-6">Archive Entry.</h2>
                 <p id="modalBody" class="text-slate-600 italic leading-relaxed border-l-2 border-slate-100 pl-6"></p>
@@ -78,6 +86,6 @@
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script type="module" src="script.js"></script>
 </body>
 </html>

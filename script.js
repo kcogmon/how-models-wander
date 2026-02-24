@@ -1,8 +1,9 @@
-// Accessing the library via the UMD bundle
-const client = window.sanityClient.createClient({
+import { createClient } from '@sanity/client';
+
+const client = createClient({
   projectId: '2mcrd1vx',
   dataset: 'production',
-  useCdn: false, 
+  useCdn: false, // Ensures you see the 3 images you just uploaded immediately
   apiVersion: '2024-02-22',
 });
 
@@ -16,25 +17,27 @@ async function fetchArchive() {
       
       if (posts && posts.length > 0) {
           status.innerText = "System: Sync Active";
+          status.style.color = "#2563eb"; // Turns blue when active
           grid.innerHTML = ''; 
 
           posts.forEach(post => {
-              if (!post.image) return;
+              if (!post.image || !post.image.asset) return;
 
-              // Reliable Image URL conversion
+              // Converts Sanity ID to a usable URL
               const ref = post.image.asset._ref;
               const [_file, id, dimensions, extension] = ref.split('-');
               const imageUrl = `https://cdn.sanity.io/images/2mcrd1vx/production/${id}-${dimensions}.${extension}`;
 
               const card = document.createElement('div');
               card.className = "group glass-panel p-4 rounded-[2.5rem] cursor-pointer transition-all hover:shadow-xl hover:-translate-y-1";
+              
               card.onclick = () => openModal(imageUrl, post.location, post.body);
 
               card.innerHTML = `
                   <div class="relative overflow-hidden rounded-[2rem] h-80 mb-6 bg-slate-100">
                       <img src="${imageUrl}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                       <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full border border-white/50">
-                           <p class="text-[9px] font-black text-slate-800 tracking-tighter uppercase">${post.syncScore || '94'}% SYNC</p>
+                           <p class="text-[9px] font-black text-slate-800 tracking-tighter uppercase">${post.syncScore || '98'}% SYNC</p>
                       </div>
                   </div>
                   <div class="px-2">
@@ -45,15 +48,16 @@ async function fetchArchive() {
               grid.appendChild(card);
           });
       } else {
-          status.innerText = "System: Empty";
-          grid.innerHTML = `<p class="col-span-full text-center tech-text py-20 text-slate-300 italic">No published entries found.</p>`;
+          status.innerText = "System: No Posts Found";
+          grid.innerHTML = `<p class="col-span-full text-center tech-text py-20 text-slate-300 italic">Ensure posts are 'Published' in Sanity Studio.</p>`;
       }
   } catch (error) {
       console.error("Sanity Error:", error);
-      status.innerText = "System: Offline";
+      status.innerText = "System: Connection Error";
   }
 }
 
+// Modal functions
 function openModal(img, loc, body) {
   document.getElementById('modalImg').src = img;
   document.getElementById('modalLoc').innerText = loc || 'Observation';
@@ -65,4 +69,8 @@ function closeModal() {
   document.getElementById('postModal').style.display = 'none';
 }
 
+// Attach close event to button
+document.getElementById('closeModalBtn').onclick = closeModal;
+
+// Initial fetch
 fetchArchive();
